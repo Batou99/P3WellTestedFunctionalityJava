@@ -85,10 +85,7 @@ public class Cart {
      */
     public Product findProductInCartLines(Long productId)
     {
-        // TODO implement the method
-//        return null;
 
-        // TO REMOVE
        return cartLineList.stream().filter(cl -> cl.getProduct().getId().equals(productId)).findFirst().get().getProduct();
     }
 
