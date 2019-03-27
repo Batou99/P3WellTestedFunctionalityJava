@@ -17,11 +17,11 @@ public class ProductModel {
 	    
 	    @NotBlank(message="Quantity must not be blank")
 	    @Pattern(regexp="^(1|[1-9][0-9]*)$", message ="Quantity it should be number and greater than zero")
-	    private String  quantity;// Required, Integer, Greater than zero
+	    private String  quantity;
 	    
 	    @NotBlank(message="Price must not be blank")
 	    @Pattern(regexp="(1|[1-9]\\d*)?(\\.\\d+)", message="Price should be a decimal number and greater than zero")
-	    private String  price;          // Required, Numeric, Greater than zero
+	    private String  price;
 
     public Long getId() {
         return id;

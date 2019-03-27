@@ -47,9 +47,7 @@ public class ProductController {
     @PostMapping("/admin/product")
     public String createProduct(@Valid @ModelAttribute("product") ProductModel productModel, BindingResult result)
     {
-    	// add println for see the errors
-    	System.out.println("binding result: " + result);
-    	
+    	    	
     	List<FieldError> errors = result.getFieldErrors();
         for (FieldError error : errors ) {
             System.out.println (error.getObjectName() + " - " + error.getDefaultMessage());

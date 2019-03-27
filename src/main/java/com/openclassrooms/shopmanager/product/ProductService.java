@@ -2,6 +2,9 @@ package com.openclassrooms.shopmanager.product;
 
 import com.openclassrooms.shopmanager.order.Cart;
 import com.openclassrooms.shopmanager.order.CartLine;
+import com.openclassrooms.shopmanager.order.OrderRepository;
+import com.openclassrooms.shopmanager.order.OrderService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +18,7 @@ public class ProductService {
     private static final Logger log = LoggerFactory.getLogger(ProductService.class);
 
     private ProductRepository productRepository;
-
+    
     @Autowired
     public ProductService(ProductRepository repository) {
         this.productRepository = repository;
@@ -37,7 +40,7 @@ public class ProductService {
     public Product getByProductId(Long productId){
         return productRepository.findById(productId).get();
     }
-
+    //change to the code
     public void createProduct(ProductModel productModel){
         Product product = new Product();
         product.setDescription(productModel.getDescription());
@@ -46,14 +49,12 @@ public class ProductService {
         product.setPrice(Double.parseDouble(productModel.getPrice()));
         product.setQuantity(Integer.parseInt(productModel.getQuantity()));
 
-        productRepository.save(product);
+         productRepository.save(product);
     }
 
     public void deleteProduct(Long productId){
-        // TODO what happens if a product has been added to a cart and has been later removed from the inventory ?
-        // delete the product form the cart by using the specific method
-        // => the choice is up to the student
         productRepository.deleteById(productId);
+      
     }
 
     public void updateProductQuantities(Cart cart){

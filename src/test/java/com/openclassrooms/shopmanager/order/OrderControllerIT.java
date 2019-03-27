@@ -1,4 +1,4 @@
-package com.openclassrooms.shopmanager.product;
+package com.openclassrooms.shopmanager.order;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,15 +18,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.openclassrooms.shopmanager.order.Cart;
 import com.openclassrooms.shopmanager.order.OrderRepository;
 import com.openclassrooms.shopmanager.order.OrderService;
-
-
+import com.openclassrooms.shopmanager.product.Product;
+import com.openclassrooms.shopmanager.product.ProductModel;
+import com.openclassrooms.shopmanager.product.ProductRepository;
+import com.openclassrooms.shopmanager.product.ProductService;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class LastTest {
-    
-	
-	
+public class OrderControllerIT {
 	@Mock
 	ProductService productService;
 	@Mock
@@ -36,15 +35,11 @@ public class LastTest {
 	private ProductRepository repository;
 	
 	@Mock
-	private OrderRepository orderRepository;
-		
-	private
-	Product product;
-	/*
+	private OrderRepository orderRepository;	
+	
 	@Before
 	public void createProduct() {
 		ProductService productService = new ProductService(repository);
-		OrderService orderService = new OrderService(orderRepository, productService);
 		
 		ProductModel pm = new ProductModel();
 		pm.setName("Nokia");
@@ -52,28 +47,24 @@ public class LastTest {
 		pm.setQuantity("10");
 		pm.setDescription("Mejor movil");
 		pm.setDetails("es caro");
-		
-		product = productService.createProduct(pm);
-		
+		productService.createProduct(pm);	
 	}
 	
 	@After
 	public void deleteP() {
-		ProductService productService = new ProductService(repository);
-		OrderService orderService = new OrderService(orderRepository, productService);
-		
 		repository.deleteAll();
-	
 	}
 	
 	@Test
-	public void createProductAndAddtoTheCartAndRemove() {
+	public void createProductAndAddtoTheCart() {
 		ProductService productService = new ProductService(repository);
 		OrderService orderService = new OrderService(orderRepository, productService);
 		
-		boolean resultExpected =orderService.addToCart(product.getId());
+		List<Product> products = productService.getAllProducts();
+		
+		boolean resultExpected = orderService.addToCart(products.get(5).getId());
+		
 		assertEquals(true, resultExpected);
-	
 	}
 	
 	@Test
@@ -82,10 +73,9 @@ public class LastTest {
 		ProductService productService = new ProductService(repository);
 		OrderService orderService = new OrderService(orderRepository, productService);
 		
-		
-		//List<Product> products = productService.getAllProducts();
+		List<Product> products = productService.getAllProducts();
 	
-		orderService.addToCart(product.getId());
+		orderService.addToCart(products.get(5).getId());
 		Cart found = orderService.getCart();
 		int  resultWanted  =found.getCartLineList().size();
 		String resultado =found.getCartLineList().get(0).getProduct().getName();
@@ -99,13 +89,14 @@ public class LastTest {
 		
 		ProductService productService = new ProductService(repository);
 		OrderService orderService = new OrderService(orderRepository, productService);
-		//List<Product> products = productService.getAllProducts();
-		orderService.addToCart(product.getId());
 		
+		List<Product> products = productService.getAllProducts();
+		orderService.addToCart(products.get(5).getId());
 		
-		orderService.removeFromCart(product.getId());
 		Cart removed = orderService.getCart();
+		orderService.removeFromCart(products.get(5).getId());
 		assertEquals(0, removed.getCartLineList().size());
 		
-	}*/
+	}
+	
 }
