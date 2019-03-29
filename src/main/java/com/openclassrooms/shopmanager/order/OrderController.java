@@ -89,9 +89,9 @@ public class OrderController {
     
     @ExceptionHandler({NoSuchElementException.class})
     public ModelAndView handleException(NoSuchElementException exception) {
-    ModelAndView modelAndView = new ModelAndView("redirect:/products");
-    modelAndView.addObject("redirect:/products", "The product is not anymore in our inventory");
-    //modelAndView.addObject("message","The product is not anymore in our inventory");
+    ModelAndView modelAndView = new ModelAndView("errorPage");
+    modelAndView.addObject("message", "The product is not anymore in our inventory");
+   
     return modelAndView;
     }
    

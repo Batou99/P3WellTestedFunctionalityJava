@@ -53,3 +53,10 @@ address {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.inventory-error {
+	font-family: 'Exo', sans-serif;
+	font-size: 20px;
+	color:red;
+	text-align:center;
+}

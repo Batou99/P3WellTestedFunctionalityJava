@@ -1,0 +1,33 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+<title th:text="#{products.title}">Products</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+
+<link href='https://fonts.googleapis.com/css?family=Roboto'
+	rel='stylesheet' type='text/css' />
+<link href='https://fonts.googleapis.com/css?family=Exo'
+	rel='stylesheet' type='text/css' />
+	<link th:href="@{/css/styles.css}" href="/css/styles.css"  rel="stylesheet" type="text/css"  />
+
+</head>
+
+<body>
+
+<div th:replace="fragments :: navbar">Navigation bar fragment</div>
+
+	<div class="container">
+
+	<div class="inventory-error">Error:<p th:text="${message}"/></div>
+
+		<a href="/products" th:text="#{products.error}">Back to our Products Page</a>
+
+
+		<div th:replace="fragments :: footer">Footer</div>
+	</div>
+</body>
+
+</html>
