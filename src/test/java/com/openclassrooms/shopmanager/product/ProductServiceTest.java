@@ -6,6 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.openclassrooms.shopmanager.order.OrderService;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class ProductServiceTest {
 
     @Mock
     ProductRepository productRepository;
+    
+    @Mock
+    OrderService orderService;
 
     @Test
     public void getAllProducts_DbHasData_allDataReturned(){
@@ -47,5 +52,8 @@ public class ProductServiceTest {
         assertEquals(2, products.size());
         assertEquals(1L, products.get(0).getId() , 0);
         assertEquals(2L, products.get(1).getId() , 0);
-    }
+        
+       
+    
+}
 }
