@@ -27,12 +27,12 @@ import com.openclassrooms.shopmanager.product.ProductService;
 public class OrderControllerIT {
 
 	@Mock
-	ProductService productService;
+	private ProductService productService;
 	@Mock
-	OrderService orderService;
+	private OrderService orderService;
 
 	@Autowired
-	private ProductRepository repository;
+	private ProductRepository productRepository;
 
 	@Mock
 	private OrderRepository orderRepository;
@@ -41,7 +41,7 @@ public class OrderControllerIT {
 
 	@Before
 	public void createProduct() {
-		ProductService productService = new ProductService(repository);
+		ProductService productService = new ProductService(productRepository);
 
 		ProductModel pm = new ProductModel();
 		pm.setName("Nokia");
@@ -55,16 +55,13 @@ public class OrderControllerIT {
 	}
 
 	@After
-	public void deleteP() {
-		ProductService productService = new ProductService(repository);
-		OrderService orderService = new OrderService(orderRepository, productService);
-
-		repository.deleteAll();
+	public void deleteProductCreated() {
+		productRepository.deleteAll();
 	}
 
 	@Test
 	public void createProductAndAddtoTheCart() {
-		ProductService productService = new ProductService(repository);
+		ProductService productService = new ProductService(productRepository);
 		OrderService orderService = new OrderService(orderRepository, productService);
 
 		boolean resultExpected = orderService.addToCart(product.getId());
@@ -75,7 +72,7 @@ public class OrderControllerIT {
 	@Test
 	public void CheckExistIntheCart() {
 
-		ProductService productService = new ProductService(repository);
+		ProductService productService = new ProductService(productRepository);
 		OrderService orderService = new OrderService(orderRepository, productService);
 
 		orderService.addToCart(product.getId());
@@ -90,15 +87,15 @@ public class OrderControllerIT {
 	@Test
 	public void RemoveFromtheCart() {
 
-		ProductService productService = new ProductService(repository);
+		ProductService productService = new ProductService(productRepository);
 		OrderService orderService = new OrderService(orderRepository, productService);
+		
 		orderService.addToCart(product.getId());
-
 		orderService.removeFromCart(product.getId());
+		
 		Cart cart = orderService.getCart();
 
 		assertEquals(0, cart.getCartLineList().size());
 
 	}
 }
-
