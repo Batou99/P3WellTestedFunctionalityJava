@@ -40,7 +40,7 @@ public class ProductService {
     public Product getByProductId(Long productId){
         return productRepository.findById(productId).get();
     }
-    //change to the code
+    //change the code
     public Product createProduct(ProductModel productModel){
         Product product = new Product();
         product.setDescription(productModel.getDescription());

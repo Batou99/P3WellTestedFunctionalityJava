@@ -1,14 +1,15 @@
 package com.openclassrooms.shopmanager.order;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 
 import java.util.List;
 
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -62,11 +63,11 @@ public class OrderServiceTest {
 
 		int resultExpected = lista.get(0).getQuantity();
 		String stringExpected = lista.get(0).getProduct().getName();
-		boolean cartIsNotEmpty = orderService.isCartEmpty();
+		boolean cartIsEmpty = orderService.isCartEmpty();
 
 		assertEquals(1, resultExpected);
 		assertEquals("Nokia", stringExpected);
-		assertEquals(false, cartIsNotEmpty);
+		assertEquals(false, cartIsEmpty);
 
 	}
 
@@ -91,4 +92,33 @@ public class OrderServiceTest {
 
 	}
 
+	@Test
+	public void saveOrder() {
+
+		ArgumentCaptor<Order> arg = ArgumentCaptor.forClass(Order.class);
+
+		Order order = new Order();
+		orderService.saveOrder(order);
+
+		verify(orderRepository).save(arg.capture());
+
+		assertEquals(order, arg.getValue());
+
+	}
+
+	@Test
+	public void createOrder() {
+
+		OrderService orderServiceMock = mock(OrderService.class);
+
+		ArgumentCaptor<Order> arg = ArgumentCaptor.forClass(Order.class);
+
+		Order order = new Order();
+		orderServiceMock.createOrder(order);
+
+		verify(orderServiceMock).createOrder(arg.capture());
+
+		assertEquals(order, arg.getValue());
+
+	}
 }
