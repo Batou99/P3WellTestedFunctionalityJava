@@ -39,6 +39,7 @@ public class OrderService {
     {
         orderRepository.save(order);
         productService.updateProductQuantities(this.cart);
+       
     }
 
     /**

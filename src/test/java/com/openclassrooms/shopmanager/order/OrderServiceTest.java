@@ -2,10 +2,9 @@ package com.openclassrooms.shopmanager.order;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +34,7 @@ public class OrderServiceTest {
 	ProductService productService;
 
 	@Test
-	public void testAddProductToCart() {
+	public void addProductToCartReturnBooleanTrue() {
 
 		Product product = new Product();
 		product.setId(1L);
@@ -49,76 +48,80 @@ public class OrderServiceTest {
 	}
 
 	@Test
-	public void testAddItemInCart() {
+	public void testInvokation_saveOrder() {
 
-		Product product = new Product();
-		product.setName("Nokia");
-		product.setPrice(2.0);
-		product.setQuantity(10);
-		product.setId(1L);
+		Order order = new Order();
+		ArgumentCaptor<Order> arg = ArgumentCaptor.forClass(Order.class);
+		orderService.saveOrder(order);
 
-		orderService.getCart().addItem(product, 1);
+		verify(orderRepository,times(1)).save(arg.capture());
 
-		List<CartLine> lista = orderService.getCart().getCartLineList();
-
-		int resultExpected = lista.get(0).getQuantity();
-		String stringExpected = lista.get(0).getProduct().getName();
-		boolean cartIsEmpty = orderService.isCartEmpty();
-
-		assertEquals(1, resultExpected);
-		assertEquals("Nokia", stringExpected);
-		assertEquals(false, cartIsEmpty);
+		assertEquals(order, arg.getValue());
 
 	}
 
 	@Test
-	public void testRemoveFromCart() {
+	public void getCartTest_returnTheCart() {
+
+		OrderService orderServiceMock = mock(OrderService.class);
+
+		Product product = new Product();
+		product.setName("Nokia");
+		Cart cart = new Cart();
+		cart.addItem(product, 1);
+
+		when(orderServiceMock.getCart()).thenReturn(cart);
+
+		Cart cartFound = orderServiceMock.getCart();
+
+		assertEquals(1, cartFound.getCartLineList().get(0).getQuantity());
+		assertEquals("Nokia", cartFound.getCartLineList().get(0).getProduct().getName());
+
+	}
+
+	@Test
+	public void testRemoveFromCart_ThenReturnZero() {
 
 		Product product = new Product();
 		product.setId(1L);
-		product.setPrice(12.0);
 
 		when(productService.getByProductId(Mockito.anyLong())).thenReturn(product);
 		orderService.addToCart(product.getId());
 
 		orderService.removeFromCart(product.getId());
+
 		Cart cartFound = orderService.getCart();
 		int resultExpected = cartFound.getCartLineList().size();
 
-		boolean removedFromCart = cartFound.getCartLineList().isEmpty();
-
-		assertEquals(true, removedFromCart);
 		assertEquals(0, resultExpected);
 
 	}
 
 	@Test
-	public void saveOrder() {
+	public void isCartEmptyTest_ReturnBooleanTrue() {
 
-		ArgumentCaptor<Order> arg = ArgumentCaptor.forClass(Order.class);
+		Cart cartFound = orderService.getCart();
 
-		Order order = new Order();
-		orderService.saveOrder(order);
+		boolean removedFromCart = cartFound.getCartLineList().isEmpty();
 
-		verify(orderRepository).save(arg.capture());
-
-		assertEquals(order, arg.getValue());
-
+		assertEquals(true, removedFromCart);
 	}
 
 	@Test
-	public void createOrder() {
-
-		OrderService orderServiceMock = mock(OrderService.class);
-
-		ArgumentCaptor<Order> arg = ArgumentCaptor.forClass(Order.class);
+	public void testInvokation_CreateOrder() {
 
 		Order order = new Order();
-		orderServiceMock.createOrder(order);
+		ArgumentCaptor<Order> arg = ArgumentCaptor.forClass(Order.class);
+		ArgumentCaptor<Cart> arg2 = ArgumentCaptor.forClass(Cart.class);
+		
+		orderService.createOrder(order);
 
-		verify(orderServiceMock).createOrder(arg.capture());
+		verify(orderRepository,times(1)).save(arg.capture());
+		verify(productService,times(1)).updateProductQuantities(arg2.capture());
 
 		assertEquals(order, arg.getValue());
+		assertNotNull(arg2.getValue());
 
 	}
+
 }

@@ -9,15 +9,12 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.openclassrooms.shopmanager.order.Cart;
-import com.openclassrooms.shopmanager.order.OrderService;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -62,7 +59,7 @@ public class ProductServiceTest {
 	}
 
 	@Test
-	public void getAllAdmin_Products() {
+	public void getAllAdmin_Products_allDataReturned() {
 
 		Product productOne = new Product();
 		productOne.setId(1L);
@@ -83,21 +80,21 @@ public class ProductServiceTest {
 	}
 
 	@Test
-	public void getProductByIdTest() {
+	public void getProductById_returnProductbyId() {
 		Product product = new Product();
 		product.setId(1L);
 		product.setPrice(12.0);
 
 		when(productRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(product));
 
-		Product test = productService.getByProductId(product.getId());
+		Product productFound = productService.getByProductId(product.getId());
 
-		assertEquals(1L, test.getId(), 0);
-		assertEquals(12.0, test.getPrice(), 0);
+		assertEquals(1L, productFound.getId(), 0);
+		assertEquals(12.0, productFound.getPrice(), 0);
 	}
 
 	@Test
-	public void createProductTest() {
+	public void createProduct_returnProduct() {
 
 		ProductModel productModel = new ProductModel();
 		productModel.setId(1L);
@@ -113,37 +110,45 @@ public class ProductServiceTest {
 
 		when(productService.createProduct(productModel)).thenReturn(product);
 
-		assertEquals(12.0, productService.createProduct(productModel).getPrice(), 0);
-		assertEquals("Ipad", productService.createProduct(productModel).getName());
+		Product productCreated = productService.createProduct(productModel);
+
+		assertEquals(12.0, productCreated.getPrice(), 0);
+		assertEquals("Ipad", productCreated.getName());
 
 	}
 
 	@Test
-	public void deleteProductTest() {
+	public void testInvokation_deleteProductTest() {
 		Long productIdTest = 1L;
 
 		ArgumentCaptor<Long> arg = ArgumentCaptor.forClass(Long.class);
 
 		productService.deleteProduct(productIdTest);
 
-		verify(productRepository).deleteById(arg.capture());
+		verify(productRepository,times(1)).deleteById(arg.capture());
 
 		assertEquals(productIdTest, arg.getValue());
 
 	}
 
 	@Test
-	public void updateProductQuantities() {
+	public void testInvokation_updateProductQuantities() {
 
-		ProductService productService = mock(ProductService.class);
-		
-		ArgumentCaptor<Cart> arg = ArgumentCaptor.forClass(Cart.class);
+		Product product = new Product();
+		product.setId(1L);
+		product.setQuantity(10);
+
 		Cart cart = new Cart();
+		cart.addItem(product, 1);
+
+		ArgumentCaptor<Product> arg = ArgumentCaptor.forClass(Product.class);
+
+		when(productRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(product));
+
 		productService.updateProductQuantities(cart);
 
-		verify(productService, times(1)).updateProductQuantities(arg.capture());
-		
-		assertEquals(cart, arg.getValue());
+		verify(productRepository, times(1)).save(arg.capture());
+		assertEquals(product, arg.getValue());
 
 	}
 
