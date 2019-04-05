@@ -24,7 +24,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 	
 
-import com.openclassrooms.shopmanager.login.LoginController;
+
 	
 	
 	
@@ -67,7 +67,19 @@ public class ProductControllerIT {
 	    	.andExpect(status().is3xxRedirection())
 	    	.andExpect(redirectedUrl("/admin/products"))
 	    	;
+	    }
 	
+	@Test
+	public void testCreateProductWhereNameIsWrittenWithIncorrectCharacters() throws Exception {
+	    mockMvc.perform(post("/admin/product")
+	    		.param("price", "1.2")
+	    		.param("quantity", "10")
+	    		.param("name", "Nokia%%%%")
+	    		.with(csrf()))
+	    	.andExpect(view().name("product"))
+	    	.andExpect(model().attributeExists("product"))
+	    	.andExpect(status().is2xxSuccessful())
+	    	.andExpect(model().errorCount(1));	
 	    }
 	
 	@Test
@@ -186,6 +198,6 @@ public class ProductControllerIT {
 	    	.andExpect(model().attributeExists("product"))
 	    	.andExpect(status().is2xxSuccessful())
 	    	.andExpect(model().errorCount(1));	
-	    }
-	
 	}
+
+}

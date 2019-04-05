@@ -70,7 +70,7 @@ public class OrderControllerIT {
 	}
 
 	@Test
-	public void CheckExistIntheCart() {
+	public void CheckProductExistIntheCart() {
 
 		ProductService productService = new ProductService(productRepository);
 		OrderService orderService = new OrderService(orderRepository, productService);
@@ -85,7 +85,7 @@ public class OrderControllerIT {
 	}
 
 	@Test
-	public void RemoveFromtheCart() {
+	public void addProductAndRemoveFromtheCart() {
 
 		ProductService productService = new ProductService(productRepository);
 		OrderService orderService = new OrderService(orderRepository, productService);
