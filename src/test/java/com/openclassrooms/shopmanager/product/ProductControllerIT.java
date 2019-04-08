@@ -22,12 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-	
 
-
-	
-	
-	
 @WithMockUser(username="admin", password="password",roles = "ADMIN")
 @WebMvcTest(ProductController.class)
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -41,10 +36,10 @@ public class ProductControllerIT {
 	private MockMvc mockMvc;
 	
 	@MockBean
-	private ProductService service;
+	private ProductService productService;
 	
 	@Mock
-	private ProductController controller;
+	private ProductController productController;
 	
 	
 	@Before
@@ -67,19 +62,6 @@ public class ProductControllerIT {
 	    	.andExpect(status().is3xxRedirection())
 	    	.andExpect(redirectedUrl("/admin/products"))
 	    	;
-	    }
-	
-	@Test
-	public void testCreateProductWhereNameIsWrittenWithIncorrectCharacters() throws Exception {
-	    mockMvc.perform(post("/admin/product")
-	    		.param("price", "1.2")
-	    		.param("quantity", "10")
-	    		.param("name", "Nokia%%%%")
-	    		.with(csrf()))
-	    	.andExpect(view().name("product"))
-	    	.andExpect(model().attributeExists("product"))
-	    	.andExpect(status().is2xxSuccessful())
-	    	.andExpect(model().errorCount(1));	
 	    }
 	
 	@Test
@@ -117,8 +99,6 @@ public class ProductControllerIT {
 	    	.andExpect(model().attributeExists("product"))
 	    	.andExpect(status().is2xxSuccessful())
 	    	.andExpect(model().errorCount(1));
-	
-	
 	    }
 	
 	@Test
@@ -132,8 +112,6 @@ public class ProductControllerIT {
 	    	.andExpect(model().attributeExists("product"))
 	    	.andExpect(status().is2xxSuccessful())
 	    	.andExpect(model().errorCount(1));
-	
-	
 	    }
 	  
 	@Test
@@ -173,31 +151,17 @@ public class ProductControllerIT {
 	    	.andExpect(status().is2xxSuccessful())
 	    	.andExpect(model().errorCount(1));
 	    }
-	    
+	
 	@Test
-	public void testCreateProductWithNameOnlyAsNumeric() throws Exception {
+	public void testCreateProductWhereNameIsWrittenWithIncorrectCharacters() throws Exception {
 	    mockMvc.perform(post("/admin/product")
-	    			.param("name", "12")
-	    			.param("quantity", "10")
-	    			.param("price", "1.2")
-	    			.with(csrf()))
+	    		.param("price", "1.2")
+	    		.param("quantity", "10")
+	    		.param("name", "Nokia%%%%")
+	    		.with(csrf()))
 	    	.andExpect(view().name("product"))
 	    	.andExpect(model().attributeExists("product"))
 	    	.andExpect(status().is2xxSuccessful())
 	    	.andExpect(model().errorCount(1));	
 	    }
-	
-	@Test
-	public void testCreateProductWithNameOnlyAsDecimal() throws Exception {
-	    mockMvc.perform(post("/admin/product")
-	    			.param("name", "1.200")
-	    			.param("quantity", "10")
-	    			.param("price", "1.2")
-	    			.with(csrf()))
-	    	.andExpect(view().name("product"))
-	    	.andExpect(model().attributeExists("product"))
-	    	.andExpect(status().is2xxSuccessful())
-	    	.andExpect(model().errorCount(1));	
-	}
-
 }

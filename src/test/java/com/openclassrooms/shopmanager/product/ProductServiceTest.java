@@ -125,9 +125,9 @@ public class ProductServiceTest {
 
 		productService.deleteProduct(productIdTest);
 
-		verify(productRepository,times(1)).deleteById(arg.capture());
+		verify(productRepository, times(1)).deleteById(arg.capture());
 
-		assertEquals(productIdTest, arg.getValue());
+		assertEquals(1L, arg.getValue(), 0);
 
 	}
 

@@ -15,7 +15,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.openclassrooms.shopmanager.product.Product;
-import com.openclassrooms.shopmanager.product.ProductRepository;
 import com.openclassrooms.shopmanager.product.ProductService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -28,10 +27,7 @@ public class OrderServiceTest {
 	private OrderRepository orderRepository;
 
 	@Mock
-	ProductRepository productRepository;
-
-	@Mock
-	ProductService productService;
+	private ProductService productService;
 
 	@Test
 	public void addProductToCartReturnBooleanTrue() {
@@ -54,7 +50,7 @@ public class OrderServiceTest {
 		ArgumentCaptor<Order> arg = ArgumentCaptor.forClass(Order.class);
 		orderService.saveOrder(order);
 
-		verify(orderRepository,times(1)).save(arg.capture());
+		verify(orderRepository, times(1)).save(arg.capture());
 
 		assertEquals(order, arg.getValue());
 
@@ -113,11 +109,11 @@ public class OrderServiceTest {
 		Order order = new Order();
 		ArgumentCaptor<Order> arg = ArgumentCaptor.forClass(Order.class);
 		ArgumentCaptor<Cart> arg2 = ArgumentCaptor.forClass(Cart.class);
-		
+
 		orderService.createOrder(order);
 
-		verify(orderRepository,times(1)).save(arg.capture());
-		verify(productService,times(1)).updateProductQuantities(arg2.capture());
+		verify(orderRepository, times(1)).save(arg.capture());
+		verify(productService, times(1)).updateProductQuantities(arg2.capture());
 
 		assertEquals(order, arg.getValue());
 		assertNotNull(arg2.getValue());
