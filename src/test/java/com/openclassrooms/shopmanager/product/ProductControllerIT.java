@@ -12,20 +12,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;	
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @WithMockUser(username="admin", password="password",roles = "ADMIN")
 @WebMvcTest(ProductController.class)
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 public class ProductControllerIT {
 	
 	
@@ -37,9 +37,6 @@ public class ProductControllerIT {
 	
 	@MockBean
 	private ProductService productService;
-	
-	@Mock
-	private ProductController productController;
 	
 	
 	@Before
