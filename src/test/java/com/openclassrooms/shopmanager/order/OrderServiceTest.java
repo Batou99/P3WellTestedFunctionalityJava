@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.openclassrooms.shopmanager.product.Product;
@@ -36,7 +35,7 @@ public class OrderServiceTest {
 		product.setId(1L);
 		product.setPrice(12.0);
 
-		when(productService.getByProductId(Mockito.anyLong())).thenReturn(product);
+		when(productService.getByProductId(1L)).thenReturn(product);
 		boolean resultExpected = orderService.addToCart(product.getId());
 
 		assertEquals(true, resultExpected);
@@ -81,11 +80,13 @@ public class OrderServiceTest {
 		Product product = new Product();
 		product.setId(1L);
 
-		when(productService.getByProductId(Mockito.anyLong())).thenReturn(product);
+		when(productService.getByProductId(1L)).thenReturn(product);
+
 		orderService.addToCart(product.getId());
+		Cart cart = orderService.getCart();
+		assertEquals(1, cart.getCartLineList().size());
 
 		orderService.removeFromCart(product.getId());
-
 		Cart cartFound = orderService.getCart();
 		int resultExpected = cartFound.getCartLineList().size();
 

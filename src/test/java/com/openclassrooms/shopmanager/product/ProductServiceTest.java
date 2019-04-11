@@ -5,7 +5,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.openclassrooms.shopmanager.order.Cart;
@@ -85,7 +84,7 @@ public class ProductServiceTest {
 		product.setId(1L);
 		product.setPrice(12.0);
 
-		when(productRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(product));
+		when(productRepository.findById(1L)).thenReturn(Optional.of(product));
 
 		Product productFound = productService.getByProductId(product.getId());
 
@@ -143,7 +142,7 @@ public class ProductServiceTest {
 
 		ArgumentCaptor<Product> arg = ArgumentCaptor.forClass(Product.class);
 
-		when(productRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(product));
+		when(productRepository.findById(1L)).thenReturn(Optional.of(product));
 
 		productService.updateProductQuantities(cart);
 
